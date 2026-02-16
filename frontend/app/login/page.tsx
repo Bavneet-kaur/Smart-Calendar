@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
 import Link from "next/link";
 import Input from "../components/ui/Input";
 import { useForm } from "react-hook-form";
 import { showToast } from "../components/ui/Toast";
-import { registerUser } from "@/services/auth";
+import { loginUser } from "@/services/auth";
 import { useRouter } from "next/navigation";
 interface FormData {
     firstName: string;
@@ -16,38 +14,29 @@ interface FormData {
     password: string;
     confirmPassword: string;
 }
-const RegistrationForm = () => {
+const LoginForm = () => {
     const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormData>();
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const router = useRouter();
     const onSubmit = async (data: FormData) => {
-        if (data.password !== data.confirmPassword) {
-            showToast("Passwords do not match", "error");
-            return;
-        }
         try {
             setLoading(true);
-            await registerUser({
-                firstName: data.firstName,
-                lastName: data.lastName,
+            await loginUser({
                 email: data.email,
                 password: data.password,
             });
-            showToast("Account created successfully", "info");
-            reset();
-            setTimeout(() => {
-                router.push("/");
-            }, 1000);
-
+            showToast("Login successful", "info");
+            router.push("/");
         } catch (error: any) {
             showToast(
-                error?.response?.data?.message || "Something went wrong",
+                error?.response?.data?.message || "Invalid credentials",
                 "error"
             );
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -83,10 +72,6 @@ const RegistrationForm = () => {
                         placeholder="Enter your password"
                         {...register("password", {
                             required: "Password is required",
-                            minLength: {
-                                value: 6,
-                                message: "Password must be at least 6 characters",
-                            },
                         })}
                         error={errors.password?.message}
                     />
@@ -121,4 +106,4 @@ const RegistrationForm = () => {
     );
 };
 
-export default RegistrationForm;
+export default LoginForm;
