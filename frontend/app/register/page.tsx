@@ -156,7 +156,7 @@ const RegistrationForm = () => {
                 <p className="text-sm text-center text-gray-500">
                     Already have an account?
                     <Link href="/login" className="text-gray-900/40 hover:text-gray-900 transition hover:font-bold">
-                        Sign in
+                        Log In
                     </Link>
                 </p>
 
