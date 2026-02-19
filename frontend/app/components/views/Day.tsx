@@ -16,16 +16,10 @@ const DayView = () => {
 
     return () => clearInterval(interval);
   }, []);
-
-  // Hours from 1AM to 11PM
   const hours = useMemo(() => {
     return Array.from({ length: 23 }, (_, i) => i + 1);
   }, []);
-
-  // Each hour row height (must match h-16 below)
-  const hourHeight = 40; // 16 * 4 = 64px (Tailwind h-16)
-
-  // Calculate red line position
+  const hourHeight = 40; // 10 * 4 = 40px (Tailwind h-16)
   const getCurrentTimePosition = () => {
     const hour = currentTime.getHours();
     const minutes = currentTime.getMinutes();
